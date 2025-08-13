@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AR Mirror with Image Filters</title>
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: sans-serif;
+            color: white;
+        }
+        canvas, video {
+            position: absolute;
+            transform: scaleX(-1);
+        }
+        #controls {
+            position: fixed;
+            bottom: 20px;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 10px;
+            border-radius: 8px;
+        }
+        select {
+            font-size: 14px;
+            padding: 10px;
+            border-radius: 5px;
+            width: 200px;
+            border: white 2px solid;
+            background-color: rgb(78, 184, 255);
+            transition: all 500ms ease-in-out;
+        }
+        select:hover {
+            background-color: rgb(66, 158, 220);
+            cursor: pointer;
+        }
+        /* Make cool animations */
+        select:focus {
+            outline: none;
+            border-color: rgb(0, 150, 255);
+            box-shadow: 0 0 5px rgba(0, 150, 255, 0.5);
+        }
+        video {
+            width: 640px;
+            height: 480px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+        canvas {
+            width: 640px;
+            height: 480px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+        /* Add a gradient background */
+        body {
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+        }
+        /* Make the camera app mobile-friendly */
+        @media (max-width: 600px) {
+            video, canvas {
+                width: 100%;
+                height: auto;
+            }
+            #controls {
+                width: 100%;
+                bottom: 0;
+                left: 0;
+                text-align: center;
+            }
+            select {
+                width: 80%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <video id="webcam" autoplay playsinline width="640" height="480"></video>
+    <canvas id="overlay" width="640" height="480"></canvas>
+
+    <div id="controls">
+        <select id="filterSelect">
+            <option value="none">❌ None</option>
+            <option value="burger">🍔 Hamburger</option>
+            <option value="fries">🍟 Fries</option>
+            <option value="sunglasses">😎 Sunglasses</option>
+            <option value="crown">👑 Crown</option>
+            <option value="partyHat">🎉 Party Hat</option>
+            <option value="mustache">👨 Mustache</option>
+        </select>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/clmtrackr@1.1.2/build/clmtrackr.min.js"></script>
+    <script>
+        const video = document.getElementById('webcam');
+        const canvas = document.getElementById('overlay');
+        const ctx = canvas.getContext('2d');
+        const filterSelect = document.getElementById('filterSelect');
+
+        const tracker = new clm.tracker();
+        tracker.init();
+
+        let currentFilter = "none";
+        filterSelect.addEventListener('change', () => {
+            currentFilter = filterSelect.value;
+        });
+
+        // Load images
+        const filters = {
+            burger: "https://png.pngtree.com/png-vector/20240715/ourmid/pngtree-hamburger-png-image_13094305.png",
+            fries: "https://png.pngtree.com/png-vector/20240918/ourmid/pngtree-a-serving-of-french-fries-sits-in-a-perfectly-golden-brown-png-image_13865133.png",
+            sunglasses: "https://static.vecteezy.com/system/resources/thumbnails/046/158/742/small/black-eyeglasses-sunglasses-png.png",
+            crown: "https://static.vecteezy.com/system/resources/previews/023/575/432/non_2x/a-regal-and-elegant-golden-crown-hangs-in-mid-air-against-a-pure-and-crystal-clear-background-exuding-a-sense-of-supremacy-and-majesty-generative-ai-png.png",
+            partyHat: "https://i.pinimg.com/474x/4b/c3/8c/4bc38c433a4288e9d407fc680dafe946.jpg",
+            mustache: "https://t4.ftcdn.net/jpg/13/27/56/03/360_F_1327560376_20p6MRoSy1NF1yw7ypeDaE6CUUNMU7jV.jpg"
+        };
+
+        const images = {};
+        for (let key in filters) {
+            images[key] = new Image();
+            images[key].src = filters[key];
+        }
+
+        async function startWebcam() {
+            const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+            video.srcObject = stream;
+            tracker.start(video);
+            drawLoop();
+        }
+
+        function drawLoop() {
+            requestAnimationFrame(drawLoop);
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            const p = tracker.getCurrentPosition();
+            if (!p) return;
+
+            if (currentFilter === "none") return;
+
+            switch (currentFilter) {
+                case "burger":
+                    drawImageOnPoint(images.burger, p[62], 100, 60, 0, 30);
+                    break;
+                case "fries":
+                    drawImageOnPoint(images.fries, p[33], 80, 80, 0, 40);
+                    break;
+                case "sunglasses":
+                    drawBetweenPoints(images.sunglasses, p[27], p[32], 50);
+                    break;
+                case "crown":
+                    drawImageOnPoint(images.crown, p[33], 150, 100, 0, 120);
+                    break;
+                case "partyHat":
+                    drawImageOnPoint(images.partyHat, p[33], 120, 150, 0, 130);
+                    break;
+                case "mustache":
+                    drawImageOnPoint(images.mustache, p[62], 100, 40, 0, 20);
+                    break;
+            }
+        }
+
+        function drawImageOnPoint(img, point, w, h, offsetX = 0, offsetY = 0) {
+            ctx.drawImage(img, point[0] - w / 2 + offsetX, point[1] - h / 2 - offsetY, w, h);
+        }
+
+        function drawBetweenPoints(img, p1, p2, extraHeight = 0) {
+            const dx = p2[0] - p1[0];
+            const dy = p2[1] - p1[1];
+            const dist = Math.sqrt(dx * dx + dy * dy) * 2;
+            const x = (p1[0] + p2[0]) / 2;
+            const y = (p1[1] + p2[1]) / 2;
+            ctx.drawImage(img, x - dist / 2, y - dist / 2, dist, dist / 2 + extraHeight);
+        }
+
+        startWebcam();
+    </script>
+</body>
+</html>
