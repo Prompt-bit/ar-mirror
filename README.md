@@ -1,8 +1,10 @@
 # AR Mirror
 
-$`\textcolor{red}{\text{Requires a browser that can run webpages}}`$
+> **Note:** Requires a browser that can run modern webpages.
 
-AR Mirror is like any other AR application with cool filters e.g. AR Doodle by Samsung. And features are rolling out to my YouTube Channel Subscribers first! So don't forget to subscribe! And another useful thing to tell all of you, AR Mirror is a web based app you can use with many filters some filters include
+AR Mirror is a web-based AR application that lets you play with fun filters, similar to apps like Samsung AR Doodle. New features are first released for my YouTube Channel subscribers — so don’t forget to subscribe!
+
+### 🎭 Available Filters
 
 - ❌ None
 - 🍔 Hamburger
@@ -12,19 +14,19 @@ AR Mirror is like any other AR application with cool filters e.g. AR Doodle by S
 - 🎉 Party Hat
 - 🧔‍♂️ Mustache
 
-## ✔️ Key Features:
+### ✔️ Key Features
 
-- **Choose Filters from 1 to 7**: Choose from many filters!
-- **See your output**: See your output with the filter you've selected
-- **Has a none menu**: Has a None (Clear Filters) menu so you cancel your filters
+- **Filter Selection:** Choose from 1 to 7 fun filters.
+- **Live Preview:** See your webcam output with the selected filter in real-time.
+- **Clear Filters:** Quickly reset your filters using the None option.
 
-## 🔒 Security
+### 🔒 Security
 
-- **Doesn't ask for risky permissions**
-- **Doesn't get data from webcam to steal info**
+- **Safe Permissions:** Only requests access necessary for functionality.
+- **Privacy Respect:** Does not collect or steal webcam data.
 
-## Permission(s) AR Mirror will ask for
+### 🛠 Permissions
 
-> It might have more permissions over time
+> Permissions may increase as new features are added.
 
-- **Webcam**
+- **Webcam:** Required for AR effects and live preview.
