@@ -4,7 +4,7 @@
 
 AR Mirror is a web-based AR application that lets you play with fun filters, similar to apps like Samsung AR Doodle. New features are first released for my YouTube Channel subscribers — so don’t forget to subscribe!
 
-### 🎭 Available Filters
+## 🎭 Available Filters
 
 - ❌ None
 - 🍔 Hamburger
@@ -14,11 +14,25 @@ AR Mirror is a web-based AR application that lets you play with fun filters, sim
 - 🎉 Party Hat
 - 🧔‍♂️ Mustache
 
-### ✔️ Key Features
+## ✔️ Key Features
 
-- **Filter Selection:** Choose from 1 to 7 fun filters.
-- **Live Preview:** See your webcam output with the selected filter in real-time.
-- **Clear Filters:** Quickly reset your filters using the None option.
+### Filter Selection
+
+Choose from 1 to 7 fun filters.
+
+### Live Preview
+
+See your webcam output with the selected filter in real-time.
+
+### Clear Filters
+
+Quickly reset your filters using the None option.
+
+### Resize your filter
+
+![Beta](https://img.shields.io/badge/status-beta-yellow)
+
+Resize your filters to be as big as you like
 
 ### 🔒 Security
 
